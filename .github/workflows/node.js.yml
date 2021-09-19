@@ -26,8 +26,14 @@ jobs:
       with:
         node-version: ${{ matrix.node-version }}
         cache: 'npm'
-    - run: git config --global user.email "vimesh93@gmail.com"
-    - run: git config --global user.name "Vimesh Shah" 
+    - run: git config --global user.email $user_name
+    - run: git config --global user.name $user_email 
+    - run: git remote set-url origin https://${github_token}@github.com/${repository}
     - run: npm install
     - run: npm run build
     - run: npm run deploy
+    - env:
+        user_name: 'github-actions[bot]'
+        user_email: 'github-actions[bot]@users.noreply.github.com'
+        github_token: ${{ secrets.ACTIONS_DEPLOY_ACCESS_TOKEN }}
+        repository: ${{ github.repository }}
